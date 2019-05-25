@@ -3,6 +3,7 @@
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -69,7 +70,19 @@ public class CustomerRestController {
 		return theCustomer;
 	}
 	
-
+	// add mapping for DELETE /customers/{customerId} - delete customer
+	@DeleteMapping("/customers/{customerId}")
+	public String deleteCustomer(@PathVariable int customerId)
+	{
+		// throw exception if null
+		if(customerService.getCustomer(customerId) == null)
+			throw new CustomerNotFoundException("Customer id not found - " + customerId);
+		
+		customerService.deleteCustomer(customerId);
+		
+		return "Delete customer id - " + customerId;
+	}
+	
 }
 
 
